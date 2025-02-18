@@ -2,57 +2,56 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
-    public static MusicManager Instance; // Singleton örneği
-    public AudioSource musicSource; // Müzik kaynağı
-    public AudioSource sfxSource; // Ses efekt kaynağı
-    public AudioClip backgroundMusic; // Arka plan müziği
-    public AudioClip buttonClickSound; // Buton tıklama sesi
+    public static MusicManager Instance;
+    public AudioSource musicSource;
+    public AudioSource sfxSource;
+    public AudioClip backgroundMusic;
+    public AudioClip buttonClickSound;
 
     private void Awake()
     {
-        // Singleton oluştur
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Sahneler arasında müziğin devam etmesini sağlar
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); // Zaten bir MusicManager varsa yenisini yok et
+            Destroy(gameObject);
         }
     }
 
     private void Start()
     {
-        // Müzik kaynağı kontrolü
+       
         if (musicSource == null)
         {
-            musicSource = gameObject.AddComponent<AudioSource>(); // Eğer bir AudioSource ekli değilse oluştur
+            musicSource = gameObject.AddComponent<AudioSource>();
         }
 
-        // Ses efekt kaynağı kontrolü
+        
         if (sfxSource == null)
         {
-            sfxSource = gameObject.AddComponent<AudioSource>(); // Ses efekt kaynağı oluştur
+            sfxSource = gameObject.AddComponent<AudioSource>();
         }
 
-        // AudioSource ayarlarını yap
+       
         musicSource.clip = backgroundMusic;
-        musicSource.loop = true; // Müzik döngüde çalsın
-        musicSource.volume = 0.2f; // Ses seviyesi
-        musicSource.playOnAwake = false; // Otomatik başlamasın
+        musicSource.loop = true;
+        musicSource.volume = 0.2f;
+        musicSource.playOnAwake = false;
 
-        sfxSource.playOnAwake = false; // Efekt otomatik başlamasın
-        sfxSource.volume = 0.3f; // Efekt sesi seviyesi
+        sfxSource.playOnAwake = false;
+        sfxSource.volume = 0.3f;
 
-        PlayMusic(); // Müziği başlat
+        PlayMusic();
     }
 
     public void PlayMusic()
     {
         if (!musicSource.isPlaying)
         {
-            musicSource.Play(); // Müziği çal
+            musicSource.Play();
         }
     }
 
@@ -60,25 +59,25 @@ public class MusicManager : MonoBehaviour
     {
         if (musicSource.isPlaying)
         {
-            musicSource.Stop(); // Müziği durdur
+            musicSource.Stop();
         }
     }
 
     public void SetVolume(float volume)
     {
-        musicSource.volume = Mathf.Clamp(volume, 0f, 1f); // Ses seviyesini ayarla (0 ile 1 arasında)
+        musicSource.volume = Mathf.Clamp(volume, 0f, 1f);
     }
 
     public void PlaySoundEffect(AudioClip clip)
     {
         if (clip != null)
         {
-            sfxSource.PlayOneShot(clip); // Tek seferlik ses çal
+            sfxSource.PlayOneShot(clip);
         }
     }
 
     public void PlayButtonClickSound()
     {
-        PlaySoundEffect(buttonClickSound); // Önceden tanımlanmış tıklama sesini çal
+        PlaySoundEffect(buttonClickSound);
     }
 }
