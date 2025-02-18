@@ -48,34 +48,34 @@ public class ScenarioManager : MonoBehaviour
     public TMP_Text choice1Text;
     public TMP_Text choice2Text;
     public TMP_Text choice3Text;
-    public TMP_Text yearText; // Yıl ve çeyrek bilgisini gösterecek metin
+    public TMP_Text yearText;
     public Button choice1Button;
     public Button choice2Button;
     public Button choice3Button;
 
     public EffectManager effectManager;
-    public Image specialImage; // Eklediğiniz özel görsel
-    public Image[] scenarioImages; // JSON'daki img değerine göre ayarlanacak görseller
+    public Image specialImage;
+    public Image[] scenarioImages;
 
     private Dictionary<string, Scenario> scenarios;
     private Scenario currentScenario;
 
-    private string currentLanguage = "tr"; // Varsayılan dil Türkçe
+    private string currentLanguage = "tr"; 
 
-    public int currentYear = 1612; // Başlangıç yılı
-    public int currentQuarter = 1; // Başlangıç çeyreği
+    public int currentYear = 1612; 
+    public int currentQuarter = 1; 
 
     void Start()
     {
         LoadScenarios();
-        UpdateYearText(); // Başlangıçta yıl bilgisini göster
-        ShowScenario("1"); // İlk senaryoyu başlat
+        UpdateYearText(); 
+        ShowScenario("1"); 
     }
 
     private void LoadScenarios()
     {
         scenarios = new Dictionary<string, Scenario>();
-        TextAsset jsonData = Resources.Load<TextAsset>("seneryolar"); // JSON dosyasını Resources klasörüne koyun
+        TextAsset jsonData = Resources.Load<TextAsset>("seneryolar");
         ScenarioArray loadedScenarios = JsonUtility.FromJson<ScenarioArray>(jsonData.text);
 
         foreach (Scenario scenario in loadedScenarios.scenarios)
@@ -94,13 +94,13 @@ public class ScenarioManager : MonoBehaviour
 
         currentScenario = scenarios[scenarioId];
 
-        // Senaryo metnini ayarla
+        
         scenarioText.text = GetLocalizedText(currentScenario.texts);
 
-        // Görselleri yönet
+        
         UpdateScenarioImage(currentScenario.img);
 
-        // Seçenekleri dinamik olarak yönet
+        
         ManageOption(choice1Button, choice1Text, currentScenario.choices.option1, 1);
         ManageOption(choice2Button, choice2Text, currentScenario.choices.option2, 2);
         ManageOption(choice3Button, choice3Text, currentScenario.choices.option3, 3);
@@ -111,7 +111,7 @@ public class ScenarioManager : MonoBehaviour
         if (option != null && option.text != null)
         {
             text.text = GetLocalizedText(option.text);
-            button.onClick.RemoveAllListeners(); // Önceki eventleri temizle
+            button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => OnChoiceSelected(choiceIndex));
             button.gameObject.SetActive(true);
         }
@@ -124,13 +124,13 @@ public class ScenarioManager : MonoBehaviour
 
     private void UpdateScenarioImage(int imgIndex)
     {
-        // Tüm görselleri kapat
+       
         foreach (Image image in scenarioImages)
         {
             image.gameObject.SetActive(false);
         }
 
-        // Belirtilen görseli aç
+     
         if (imgIndex >= 0 && imgIndex < scenarioImages.Length)
         {
             scenarioImages[imgIndex].gameObject.SetActive(true);
@@ -149,12 +149,10 @@ public class ScenarioManager : MonoBehaviour
 
     private void UpdateScenarioUI()
     {
-        // Mevcut senaryonun metinlerini güncelle
         if (currentScenario != null)
         {
             scenarioText.text = GetLocalizedText(currentScenario.texts);
 
-            // Seçeneklerin metinlerini güncelle
             ManageOption(choice1Button, choice1Text, currentScenario.choices.option1, 1);
             ManageOption(choice2Button, choice2Text, currentScenario.choices.option2, 2);
             ManageOption(choice3Button, choice3Text, currentScenario.choices.option3, 3);
@@ -188,26 +186,24 @@ public class ScenarioManager : MonoBehaviour
             return;
         }
 
-        // Özel durum: Scenario ID 5
         if (currentScenario.id == "5")
         {
             if (choiceIndex == 1)
             {
-                specialImage.gameObject.SetActive(true); // Görseli aktif et
+                specialImage.gameObject.SetActive(true); 
             }
             else if (choiceIndex == 2)
             {
-                specialImage.gameObject.SetActive(false); // Görseli deaktif et
+                specialImage.gameObject.SetActive(false); 
             }
         }
 
-        // Özel durum: Scenario ID 5.1
+
         if (currentScenario.id == "5.1" && choiceIndex == 2)
         {
-            specialImage.gameObject.SetActive(false); // Görseli deaktif et
+            specialImage.gameObject.SetActive(false); 
         }
 
-        // Efektleri uygula
         if (selectedOption.effects != null)
         {
             var effectsDict = new Dictionary<string, int>();
@@ -231,10 +227,8 @@ public class ScenarioManager : MonoBehaviour
             Debug.LogWarning("Efekt bulunamadı.");
         }
 
-        // Yılı ve çeyreği güncelle
         IncrementQuarter();
 
-        // Bir sonraki senaryoya geç
         if (!string.IsNullOrEmpty(selectedOption.next_scenario))
         {
             ShowScenario(selectedOption.next_scenario);
