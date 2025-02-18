@@ -27,22 +27,22 @@ public class EffectManager : MonoBehaviour
 
     public GameObject gameOverPanel;
 
-    // Game Over Metinleri
+    
     public TMP_Text reputationGameOverText;
     public TMP_Text moneyGameOverText;
     public TMP_Text healthGameOverText;
     public TMP_Text shipGameOverText;
     public TMP_Text crewGameOverText;
 
-    // Game Over Görselleri
+    
     public Image reputationGameOverImage;
     public Image moneyGameOverImage;
     public Image healthGameOverImage;
     public Image shipGameOverImage;
     public Image crewGameOverImage;
 
-    public TMP_Text gameOverYearText; // Geçen yılları gösterecek metin
-    public ScenarioManager scenarioManager; // ScenarioManager referansı
+    public TMP_Text gameOverYearText; 
+    public ScenarioManager scenarioManager; 
 
     public Button closeButton;
 
@@ -167,8 +167,8 @@ public class EffectManager : MonoBehaviour
         reasonText.gameObject.SetActive(true);
         reasonImage.gameObject.SetActive(true);
 
-        // Yıl ve çeyrek bilgisi ekle
-        int yearsPassed = scenarioManager.currentYear - 1612; // Geçen yılları hesapla
+        
+        int yearsPassed = scenarioManager.currentYear - 1612; 
         gameOverYearText.text = $"{yearsPassed} year(s), {scenarioManager.currentQuarter}. Quarter.";
 
         closeButton.onClick.RemoveAllListeners();
@@ -197,14 +197,14 @@ public class EffectManager : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
 
-        // Değerleri sıfırla
+        
         reputation = 50;
         money = 50;
         health = 50;
         ship = 50;
         crew = 50;
 
-        scenarioManager.ResetTime(); // Tarihi sıfırla
+        scenarioManager.ResetTime(); 
 
         UpdateEffectsUI();
     }
